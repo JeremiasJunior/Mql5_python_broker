@@ -31,7 +31,7 @@ data = mt5_historicaldata('5', '2020.10.1', '2020.10.5')
 MGLU3_close = data['MGLU3']['close']
 ```
 
-<b>opening and closing positions<\b>
+<b>opening and closing positions</b><br>
 
 To open a long position you can use the class mt5_buy, it receives the symbol, stoploss, takeprofit and volume. If you dont want to set a stoploss or stopgain you can just set as 0. 
 ```python
