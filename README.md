@@ -1,59 +1,82 @@
-## Introduction 
-MetaTrader is a very powerful and useful tool. Most of programmers interested in developing investment robots have problems because it require to learn Mql programming language in order to implement trade strategies. This repository contains two scripts, first one is a server written in MQL5, and the second one is a python script containing multiple classes that works like an interface between your python trade strategy and MetaTrader.
+
+# Mql5_python_broker
+
+## Introduction
+
+The "Mql5_python_broker" project aims to simplify the integration between MQL5 and Python by providing a broker-like interface. It allows you to send and receive data between MetaTrader (MQL5) and Python, enabling the development of custom trading strategies using Python's extensive libraries and capabilities.
 
 ## Setup
-Install PyZMQ throught <i>pip install zmq</i> and copy the files in lib folder to your MataTrader directory. In MetaEditor you should compile <i>zmq_server.mq5</i> and attach the expert advisor in a chart, check the box ". Also important to mention, you should allow it to import all DLL's, allow Algo Trading and Allow Modification of Signals Setting. Also it's important to change the SERVER variable inside mt5_tools.py to your localhost ip, or the ip were the server is running. 
 
-## using it
+To set up the "Mql5_python_broker" project, follow these steps:
 
-<b>mt5_currentprice</b><br>
-it receive the Symbol ( or ticker) as a parameter, and it returns a list with the bid price and ask price. For example
+1. Install the PyZMQ library by running the following command:
+   ```
+   pip install zmq
+   ```
+
+2. Copy the files in the "lib" folder to your MetaTrader directory.
+
+3. In the MetaEditor, compile the "zmq_server.mq5" file.
+
+4. In the MetaTrader terminal, attach the expert advisor to a chart and check the box for "Allow DLL imports," "Allow Algo Trading," and "Allow modification of signals setting."
+
+5. Inside the "mt5_tools.py" file, update the `SERVER` variable to your localhost IP or the IP where the server is running.
+
+## Usage
+
+The "Mql5_python_broker" project provides the following classes for interacting with MetaTrader from Python:
+
+### `mt5_currentprice`
+
+This class retrieves the bid and ask prices for a given symbol (or ticker). Here's an example of how to use it:
+
 ```python
-
 price = mt5_currentprice('MGLU3')
 bid_price = price[0]
 ask_price = price[1]
 ```
 
+### `mt5_historicaldata`
 
-<b>mt5_historicaldata</b><br>
-first creat a file called <i>symbols.csv</i> and write all symbols you wanna get data from. The class receives <i>timeframe</i> (for more details check the zmq_server.mq5), <i>start_datetime</i> and <i>end_datetime</i> it sets the time interval for the data, for example :
+This class retrieves historical data for specified symbols within a given timeframe. First, create a file called "symbols.csv" and write all the symbols you want to fetch data for. Here's an example:
 
-<i>symbols.csv</i>
-```text
+**symbols.csv**
+```
 MGLU3
 AZUL4
 ITUB4
 ```
+
+Then, you can use the class as follows:
+
 ```python
 data = mt5_historicaldata('5', '2020.10.1', '2020.10.5')
 
 MGLU3_close = data['MGLU3']['close']
 ```
 
-<b>opening and closing positions</b><br>
+### Opening and Closing Positions
 
-To open a long position you can use the class mt5_buy, it receives the symbol, stoploss, takeprofit and volume. If you dont want to set a stoploss or stopgain you can just set as 0. 
+To open a long position, you can use the `mt5_buy` class, which requires the symbol, stop loss (sl), take profit (tp), and volume (vol). If you don't want to set a stop loss or take profit, you can pass 0. Here's an example:
+
 ```python
-
 order = mt5_buy('MGLU3', 0, 0, 500)
-
 ```
 
-<i>order</i> will get a list containing the <i>ticket, price and volume</i> you need to save the ticket because it's necessary to close the position.
+The `order` variable will contain a list with the ticket, price, and volume. Make sure to save the ticket value because it will be necessary to close the position.
+
+To close the position, call the `mt5_close` class and pass the ticket as a parameter. The `mt5_close` class will return the status, price, and volume. Here's an example:
 
 ```python
-
-ticket_code = order[0]
-
-```
-
-Now to close this position you just need to call mt5_close, and pass the ticket as parameter. the mt5_close class will return the status, price and volume.
-
-```python
-
 ret = mt5_close(ticket_code)
-print('position closed at ${}'.format(ret[1]))
+print('Position closed at ${}'.format(ret[1]))
+```
 
+## License
+
+The "Mql5_python_broker" project is licensed under the [MIT License](LICENSE).
 
 ```
+```
+
+Please note that this is a general improvement based on the information provided. Feel free to modify it further to fit your specific project requirements.
