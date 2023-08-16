@@ -72,11 +72,4 @@ ret = mt5_close(ticket_code)
 print('Position closed at ${}'.format(ret[1]))
 ```
 
-## License
 
-The "Mql5_python_broker" project is licensed under the [MIT License](LICENSE).
-
-```
-```
-
-Please note that this is a general improvement based on the information provided. Feel free to modify it further to fit your specific project requirements.
